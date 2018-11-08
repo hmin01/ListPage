@@ -1,0 +1,99 @@
+.body-basic-bg {
+  background-color: #F1F2F3;
+}
+
+.basic-form {
+  width: 370px;
+  margin: auto;
+  padding: 0 58px 40px 58px;
+  background-color: white;
+  border: 1px solid #E1E2E3;
+}
+
+.form-header {
+  padding: 40px 0;
+}
+
+.form-header > .form-title {
+  margin: 0;
+  font-size: 69px;
+  color: #B2DFDB;
+}
+
+.form-alert {
+  width: 100%;
+  padding: 6px 16px 6px 13px;
+  margin: 0 0 15px 0;
+  background-color: rgba(255, 193, 7, 0.7) !important;
+  border-radius: 2rem !important;
+  text-align: center;
+  display: none;
+  color: white;
+  font-size: 11px;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: 100;
+}
+
+.form-alert > img {
+  float: left;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin: 2px 6px 2px 3px;
+}
+
+.form-alert > #alert-message {
+  display: inline-block;
+  margin: 3px 0 !important;
+}
+
+.form-body > input {
+  margin: 0 0 15px 0;
+  box-shadow: none !important;
+  border: 1px solid #E7E8E9 !important;
+  color : gray;
+  transition: all 0.3s;
+}
+
+.form-body > input:active, input:focus {
+  border: 1px solid #00BFA5 !important;
+  box-shadow: 0 0 3px 1px #00BFA5 !important;
+  transition: all 0.4s !important;
+}
+
+div[data-tag=button-field] > p {
+  display: block;
+  width: 100%;
+  margin: 0 0 15px 0 !important;
+}
+
+div[data-tag=button-field] > button{
+  display: block;
+  width: 100%;
+  margin: 0 0 15px 0;
+  padding: 0.75rem;
+  background-color: #D1D2D3;
+  color: white;
+  border: none;
+  border-radius: 0.35rem;
+  transition: all 0.5s;
+}
+
+div[data-tag=button-field] > button:hover, button:active, button:focus {
+  background-color: #B1B2B3;
+  outline: none;
+  box-shadow: none;
+  transition: all 0.5s;
+}
+
+div[data-tag=button-field] > button[data-tag=main-button] {
+  background-color: #00BFA5;
+  border: none;
+  color: white;
+}
+
+div[data-tag=button-field] > button[data-tag=main-button]:hover, button[data-tag=main-button]:active, button[data-tag=main-button]:focus {
+  background-color: #009D83;
+  outline: none;
+  box-shadow: none;
+  transition: all 0.5s;
+}

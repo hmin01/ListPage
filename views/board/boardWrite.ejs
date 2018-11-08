@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>게시글 작성</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/boardStyle.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/animate.css">
+    </head>
+    <body class="container" id="body_writePage">
+        <header></header>
+        <section class="container">
+            <article>
+                <div class="form-board animated fadeInRight" data-tag="basic-form">
+                    <div class="board-header">
+                        <label>게시글 작성</label>
+                    </div>
+                    <div class="board-body">
+                        <div class="form-content">
+                            <div class="form-group">
+                                <label>제목</label>
+                                <input type="text" class="form-input" id="title-text" autocomplete="off" placeholder="제목을 입력하세요">
+                            </div>
+                            <div class="form-group">
+                                <label>내용</label>
+                                <textarea class="form-input" rows="10" id="content-text" placeholder="내용을 입력하세요"></textarea>
+                            </div>
+                            <div class="form-group" id="footer_btn">
+                                <div class="btn-area">
+                                    <button type="submit" class="basic-btn" id="btn_save">Save</button>
+                                    <button type="button" class="basic-btn" id="btn_cancel">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <footer></footer>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script>
+            jQuery(function($) {
+                $("#btn_save").on('click', function() {
+                    const dataInfo = {
+                        title: $("#title-text").val(),
+                        content: $("#content-text").val(),
+                        date: new Date()
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/board/save",
+                        data: "title="+dataInfo.title+"&content="+dataInfo.content+"&createdAt="+dataInfo.date,
+                        success: function(data) {
+                            alert(data.message);
+                            redirect();
+                        },
+                    });
+                });
+
+                $("#btn_cancel").on('click', function() {
+                    redirect();
+                });
+
+                function redirect() {
+                    $(location).attr('href', '/board');
+                }
+            });
+        </script>
+    </body>
+</html>

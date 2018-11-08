@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/itemListStyle.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/animate.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+    <!-- Sweet alert -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/sweetalert.css">
+    <!-- DateTimePicker -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-datetimepicker.css">
+</head>
+<body>
+<% include ../nav/side_nav.ejs %>
+<section>
+    <article class="main-container">
+        <div class="main-header">
+            <% include ../nav/head_nav.ejs %>
+        </div>
+        <div class="main-body">
+            <div class="alert-container" id="alert-field"></div>
+            <div class="occupy-100">
+                <div class="padding-area-15">
+                    <div class="form-board animated fadeInRight">
+                        <div class="board-header">
+                            <div class="form-group-choice">
+                                <div class="form-button mb-15">
+                                    <div class="form-radio">
+                                        <input class="form-radio-input" type="radio" name="item" value="0" id="radio-image">
+                                        <label class="form-radio-label mr-m1" for="radio-image">Image</label>
+                                        <input class="form-radio-input" type="radio" name="item" value="1" id="radio-video">
+                                        <label class="form-radio-label" for="radio-video">Video</label>
+                                    </div>
+                                </div>
+                                <div class="form-edit">
+                                    <a class="header-button" id="btn_edit">
+                                        <img id="icon" src="/images/edit.svg" title="Edit" alt="Edit">
+                                    </a>
+                                </div>
+                                <input class="form-input animated fadeIn time-12" id="edit-text" type="text" placeholder="Text" opacity="display">
+                                <input class="form-input animated fadeIn time-12" id="duration-text" type="number" placeholder="Duration (second)" opacity="display">
+                            </div>
+                            <div class="form-group-choice">
+                                <div class="form-button mb-15">
+                                    <div class="form-radio">
+                                        <input class="form-radio-input" type="radio" name="date-state" value="0" id="radio-immediately">
+                                        <label class="form-radio-label mr-m1" for="radio-immediately">Immediately</label>
+                                        <input class="form-radio-input" type="radio" name="date-state" value="1" id="radio-reservation">
+                                        <label class="form-radio-label" for="radio-reservation">Reservation</label>
+                                    </div>
+                                </div>
+                                <div class="dateTime-field">
+                                    <input class="form-input animated fadeIn time-12" id="date-text" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group" id="btn-field">
+                                <div class="btn-area animate fadeIn time-12 notDisplay">
+                                    <button class="basic-btn" id="btn_add">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="board-body">
+                            <table class="basic-table item-table">
+                                <thead id="table-head">
+                                <tr>
+                                    <th>item</th>
+                                    <th>content</th>
+                                    <th>state</th>
+                                    <th>duration</th>
+                                    <th>date</th>
+                                    <th class="notDisplay"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-body"></tbody>
+                            </table>
+                        </div>
+                        <div class="board-footer text-center">
+                            <div class="page-choice">
+                                <ul class="pagination" id="paging"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<footer></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- Sweet alert -->
+<script src="/javascripts/sweetalert.min.js"></script>
+<!-- DatePicker -->
+<script src="/javascripts/datetimepicker.js"></script>
+<script>
+    $(document).ready(function() {
+        let preStep = false, nextStep = false, editState = false;
+        let itemList;
+        const edit_text = $("#edit-text");
+        const duration_text = $("#duration-text");
+        const date_text = $("#date-text");
+        const info = {
+            item: 0,
+            state: 0,
+            content: "",
+            duration: 0,
+            date: ""
+        }
+
+        // load Data
+        getData();
+
+        // datepicker
+        $("#date-text").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+
+        $("#btn_edit").on('click', function() {
+            editState = !editState;
+            if(editState) {
+                $("#table-head > tr > th:last-child").css("display", "table-cell");
+                $("#table-body > tr > td:nth-last-child(2)").css("display", "table-cell");
+            } else {
+                $("#table-head > tr > th:last-child").css("display", "none");
+                $("#table-body > tr > td:nth-last-child(2)").css("display", "none");
+            }
+        });
+
+        // Choice Step 1
+        $("#radio-image").on('click', function() {
+            duration_text.css("display", "block");
+            choiceStep1(0);
+        });
+
+        $("#radio-video").on('click', function() {
+            duration_text.css("display", "none");
+            duration_text.val("");
+            choiceStep1(1);
+        });
+
+        function choiceStep1(item) {
+            edit_text.css("display", "block");
+            info.item = item; preStep = true;
+            if(nextStep) {
+                nextStep = false;
+                const radio_state = document.getElementsByName('date-state');
+                for(let i=0;i<radio_state.length;i++)
+                    radio_state[i].checked = false;
+                date_text.css("display", "none");
+            }
+            visible_button();
+        }
+
+        // Choice Step 2
+        $("#radio-immediately").on('click', function() {
+            choiceStep2(0);
+        });
+
+        $("#radio-reservation").on('click', function() {
+            choiceStep2(1);
+        });
+
+        function choiceStep2(item) {
+            info.state = item; nextStep = true;
+            if(item) { date_text.css("display", "block"); }
+            else { date_text.css("display", "none"); }
+            date_text.val(moment(new Date).format("YYYY-MM-DD HH:mm"));
+            visible_button();
+        }
+
+        // save data
+        $("#btn_add").on('click', function() {
+            if(checkBlock(edit_text.val())) {
+                setAlert("editText is empty!", "warning");
+                edit_text.focus();
+            } else if(checkBlock(date_text.val())) {
+                setAlert("date is empty!", "warning");
+                date_text.focus();
+            } else if(info.state) {
+                if(date_text.val()) {
+                    info.content = edit_text.val();
+                    info.date = date_text.val();
+                    if(duration_text.val())
+                        info.duration = duration_text.val();
+                    sendData();
+                }
+            } else {
+                info.content = edit_text.val();
+                sendData();
+            }
+        });
+
+        function sendData() {
+            $.ajax({
+                type: "POST",
+                url: "/item/save",
+                data: "item="+info.item+"&state="+info.state+"&content="+info.content+"&duration="+info.duration+"&date="+info.date,
+                success: function() {
+                    setAlert("save complete!", "success");
+                    getData();
+                }
+            })
+        }
+
+        // get data and display Table
+        function getData() {
+            $.ajax({
+                type: "GET",
+                url: "/item/list",
+                success: function (data) {
+                    itemList = data.list;
+                    initialize();
+                    displayTable(data.totalPage, data.currentPage);
+                }
+            });
+        }
+
+        function initialize() {
+            const radio_item = document.getElementsByName('item');
+            const radio_state = document.getElementsByName('date-state');
+            for(let i=0;i<2;i++) {
+                radio_item[i].checked = false;
+                radio_state[i].checked = false;
+            }
+            preStep=false; nextStep=false;
+            visible_button();
+
+            edit_text.val("");
+            edit_text.css("display", "none");
+            duration_text.val("");
+            duration_text.css("display", "none");
+            date_text.val("");
+            date_text.css("display", "none");
+
+            info.duration = 0;
+            info.date = moment(new Date).format("YYYY-MM-DD HH:mm");
+        }
+
+        function displayTable(totalPage, currentPage) {
+            $("#table-body").html("");
+            let html = "";
+
+            let item, state, duration = 0;
+            for(let i=0;i<itemList.length;i++) {
+                if(itemList[i].item) { item = 'video'; }
+                else { item = 'image'; }
+
+                if(itemList[i].state) { state = 'reservation'; }
+                else { state = 'immediately'; }
+
+                if(itemList[i].duration === 0) { duration = "-"; }
+                else { duration = itemList[i].duration + "s"; }
+
+                html +=
+                    '<tr>' +
+                        '<td>' + item + '</td>' +
+                        '<td>' + itemList[i].content + '</td>' +
+                        '<td>' + state + '</td>' +
+                        '<td>' + duration + '</td>' +
+                        '<td>' + moment(itemList[i].createdAt).format("YYYY-MM-DD HH:mm") + '</td>' +
+                        '<td style="display:none">' +
+                            '<p id="del">x</p>' +
+                        '</td>' +
+                        '<td style="display:none">' + itemList[i]._id + '</td>' +
+                    '<tr>';
+            }
+            $("#table-body").html(html);
+
+            $("#table-body > tr > td:nth-last-child(2)").on("click", function () {
+                const item = $('+ td', this).text();
+
+                swal({
+                        title: "Are you sure?",
+                        text: "you want to delete it?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#1ab394",
+                        confirmButtonText: "Delete",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false},
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/item/delete/"+item,
+                                success: function () {
+                                    swal({
+                                            title: "Deleted!",
+                                            text: "board has been deleted.",
+                                            type: "success"},
+                                        function () {
+                                            getData();
+                                            $("#table-head > tr > th:last-child").css("display", "none");
+                                            $("#table-body > tr > td:nth-last-child(2)").css("display", "none");
+                                            editState = false;
+                                        });
+                                }
+                            });
+                        }
+                    });
+            });
+            displayPaging(totalPage, currentPage);
+        }
+
+        function displayPaging(totalPage, currentPage) {
+            $("#paging").html("");
+            html = "";
+            for(let cnt=1; cnt<=(totalPage);cnt++) {
+                html += '<li><a id="pageNum">' + cnt + '</a></li>';
+            }
+            $("#paging").html(html);
+            const display_currentPage = $("#paging").find("li:nth-child("+currentPage+")").find("#pageNum");
+            display_currentPage.css("background-color", "#4DB6AC");
+            display_currentPage.css("border", "1px solid #80CBC4");
+            display_currentPage.css("color", "#FFFFFF");
+
+            $("#paging li").on("click", function() {
+                const currentPage = $(this);
+                const pageNum = currentPage.text();
+                $.ajax({
+                    type: "GET",
+                    url: "/item/page/"+pageNum,
+                    success: function(data) {
+                        itemList = data.list;
+                        displayTable(data.totalPage, data.currentPage);
+                    }
+                })
+            });
+        }
+
+        function checkBlock(obj) {
+            const blank_pattern_1 = /^\s+|\s+$/g;
+            return (obj === "" || obj == null) || obj.replace(blank_pattern_1, "") === "";
+        }
+
+        function visible_button() {
+            if(preStep && nextStep) {
+                $(".btn-area").css("display", "block");
+            } else {
+                $(".btn-area").css("display", "none");
+            }
+        }
+
+        // alert
+        let alert_fadeOut, alert_remove;
+        function setAlert(str, code) {
+            let html = "";
+            if(code === 'warning') {
+                html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="warning">' +
+                    '<img id="alert-img" src="/images/alert.svg">';
+            } else if (code === 'success') {
+                html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="success">' +
+                    '<img id="alert-img" src="/images/success.svg">';
+            } else {
+                html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="normal">' +
+                    '<img id="alert-img" src="/images/alert.svg">';
+            }
+            html += '<p id="alert-message">' + str + '</p>' +
+                '<button class="alert-close" type="button" id="close">x</button>' +
+                '</div>';
+            clearTimeout(alert_fadeOut);
+            clearTimeout(alert_remove);
+            $("#alert-field").html(html);
+
+            $("#alert").on('click', function() {
+                $(this).attr('class', "form-alert animated fadeOut-alert time-half");
+                setTimeout(function() {
+                    $(this).remove();
+                }, 500);
+            });
+
+            $("#alert > #close").on('click', function() {
+                $(this).remove();
+            });
+
+            alert_fadeOut = setTimeout(function() {
+                $("#alert-field div").attr('class', "form-alert animated fadeOut-alert time-half");
+                alert_remove = setTimeout(function() {
+                    $("#alert-field div").remove();
+                }, 500);
+            }, 2000);
+        }
+
+        // set placeholder
+        const form_input = $(".form-input");
+        form_input.on('focus', function () {
+            $(this).attr('opacity', 'hide');
+        });
+
+        form_input.on('blur', function() {
+            $(this).attr('opacity', 'display');
+        });
+    });
+</script>
+</body>
+</html>

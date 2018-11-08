@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+
+    <link href="/stylesheets/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+</head>
+<body>
+<% include nav/side_nav.ejs %>
+<section>
+    <article class="main-container">
+        <div class="main-header">
+            <% include nav/head_nav.ejs %>
+        <div class="main-body">
+            <div class="animated fadeInRight">
+                <div class="body-row">
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-row">
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-66">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-row">
+                    <div class="occupy-50">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-50">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-row">
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<footer></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".item-box-title").on('click', function() {
+            const item_box = $(this).next();
+            if (item_box.attr('data-activate') === "true") {
+                item_slidUp(item_box);
+            } else if(item_box.attr('data-activate') === 'false') {
+                item_slidDown(item_box);
+            }
+        });
+
+        function item_slidUp(obj) {
+            obj.slideUp(250, function() {
+                obj.attr('data-activate', 'false');
+            });
+        }
+
+        function item_slidDown(obj) {
+            obj.slideDown(250, function () {
+                obj.attr('data-activate', 'true');
+            });
+        }
+    });
+</script>
+</body>
+</html>

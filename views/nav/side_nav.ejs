@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<nav>
+    <div class="side-navbar">
+        <ul class="first-menu">
+            <li>
+                <a href="/main">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span>Board</span>
+                </a>
+                <ul class="second-menu" data-activate="false">
+                    <li><a href="/board">Board</a></li>
+                    <li><a>User</a></li>
+                    <li><a>Alarm</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <span>Item</span>
+                </a>
+                <ul class="second-menu" data-activate="false">
+                    <li><a href="/item">item_page</a></li>
+                    <li><a>item</a></li>
+                    <li><a>item</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <span>cccc</span>
+                </a>
+                <ul class="second-menu" data-activate="false">
+                    <li><a>c1</a></li>
+                    <li><a>c2</a></li>
+                    <li><a>c3</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <span>dddd</span>
+                </a>
+                <ul class="second-menu" data-activate="false">
+                    <li><a>d1</a></li>
+                    <li><a>d2</a></li>
+                    <li><a>d3</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <span>eeee</span>
+                </a>
+                <ul class="second-menu" data-activate="false">
+                    <li><a>e1</a></li>
+                    <li><a>e2</a></li>
+                    <li><a>e3</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".first-menu > li > a").on('click', function () {
+            const subMenu = $(this).next();
+            const parentMenu = subMenu.parent();
+            if (subMenu.attr('data-activate') === "true") {
+                parentMenu.removeClass('activate');
+                item_slidUp(subMenu);
+            } else if (subMenu.attr('data-activate') === "false") {
+                parentMenu.addClass('activate');
+                item_slidDown(subMenu);
+
+                const prevObj = parentMenu.prevAll();
+                const nextObj = parentMenu.nextAll();
+                for (let i = 0; i < prevObj.length; i++) {
+                    $(prevObj[i]).removeClass('activate');
+                    const otherObj = $(prevObj[i]).children('ul');
+                    item_slidUp(otherObj);
+                }
+                for (let i = 0; i < nextObj.length; i++) {
+                    $(nextObj[i]).removeClass('activate');
+                    const otherObj = $(nextObj[i]).children('ul');
+                    item_slidUp(otherObj);
+                }
+            }
+        });
+
+        function item_slidUp(obj) {
+            obj.slideUp(250, function() {
+                obj.attr('data-activate', 'false');
+            });
+        }
+
+        function item_slidDown(obj) {
+            obj.slideDown(250, function () {
+                obj.attr('data-activate', 'true');
+            });
+        }
+
+        // css을 이용한 slidUp, slidDown
+        // function sideMenu_slideUp(parent, obj, state) {
+        //     parent.removeClass('activate');
+        //     obj.removeClass('activate');
+        //     setTimeout(function() {
+        //         obj.attr('data-activate', 'false');
+        //         if(state == false) { transitionState = state }
+        //     }, 350);
+        // }
+        //
+        // function sideMenu_slideDown(parent, obj) {
+        //     parent.addClass('activate');
+        //     obj.attr('data-activate', "true");
+        //     obj.addClass('activate');
+        //     const size = ((obj.children("li").length) * (obj.children("li").height() + 4));
+        //     console.log(size);
+        //     obj.height(size);
+        //     setTimeout(function () {
+        //         // obj.addClass('activate');
+        //         obj[0].addEventListener("transitionend", function () {
+        //             transitionState = false;
+        //         });
+        //     }, 0);
+        // }
+    });
+</script>
+</html>

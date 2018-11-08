@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Board</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/boardStyle.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/animate.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+</head>
+<body>
+<% include ../nav/side_nav.ejs %>
+<section>
+    <article class="main-container">
+        <div class="main-header">
+            <% include ../nav/head_nav.ejs %>
+        </div>
+        <div class="main-body">
+            <div class="occupy-100">
+                <div class="padding-area-15">
+                    <div class="form-board animated fadeInRight time-07">
+                        <div class="board-header">
+                            <label>Board</label>
+                            <ul class="form-button">
+                                <li>
+                                    <div class="form-search">
+                                        <input class="form-search-input" id="search-text" type="text" placeholder="Search" opacity="display">
+                                        <a class="header-button" id="btn_search" data-tag="search">
+                                            <img id="icon" src="/images/search.svg">
+                                        </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a class="header-button" id="btn_write">
+                                        <img id="icon" src="/images/edit.svg">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="board-body">
+                            <table class="basic-table board-table">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>작성일</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-body"></tbody>
+                            </table>
+                        </div>
+                        <div class="board-footer text-center">
+                            <div class="page-choice">
+                                <ul class="pagination" id="paging"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<footer></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script>
+    jQuery(function () {
+        let boardList;
+        $.ajax({
+            type: "GET",
+            url: "/board/list",
+            success: function (data) {
+                boardList = data.list;
+                displayTable(data.totalPage, data.currentPage);
+            }
+        });
+
+        function displayTable(totalPage, currentPage) {
+            $("#table-body").html("");
+            let html = "";
+            for(let i=0; i<boardList.length; i++) {
+                const info = boardList[i];
+                const count = ((currentPage - 1) * 10) + 1;
+                html +=
+                    '<tr>' +
+                        '<td>' + (count+i) + '</td>' +
+                        '<td>' + info.title + '</td>' +
+                        '<td>' + info.user.name + '</td>' +
+                        '<td>' + moment(info.createdAt).format("YYYY-MM-DD") + '</td>' +
+                        '<td>' + info.id + '</td>' +
+                    '</tr>'
+            }
+            $("#table-body").html(html);
+
+            $("#table-body tr").on("click", function () {
+                const selectNum = $(this).find("td:last-child").text();
+                $(location).attr("href", "/board/info/"+selectNum);
+            });
+
+            displayPaging(totalPage, currentPage);
+        }
+
+        function displayPaging(totalPage, currentPage) {
+            $("#paging").html("");
+            html = "";
+            for(let cnt=1; cnt<=(totalPage);cnt++) {
+                html += '<li><a id="pageNum">' + cnt + '</a></li>';
+            }
+            $("#paging").html(html);
+            const display_currentPage = $("#paging").find("li:nth-child("+currentPage+")").find("#pageNum");
+            display_currentPage.css("background-color", "#4DB6AC");
+            display_currentPage.css("border", "1px solid #80CBC4");
+            display_currentPage.css("color", "#FFFFFF");
+
+            $("#paging li").on("click", function() {
+                const currentPage = $(this);
+                const pageNum = currentPage.text();
+                $.ajax({
+                    type: "GET",
+                    url: "/board/page/"+pageNum,
+                    success: function(data) {
+                        boardList = data.list;
+                        displayTable(data.totalPage, data.currentPage);
+                    }
+                })
+            });
+        }
+
+        $("#btn_write").on("click", function() {
+            $(location).attr("href", "/board/write");
+        });
+
+        // set placeholder
+        const search_input = $(".form-search-input");
+        search_input.on('focus', function () {
+            $(this).attr('opacity', 'hide');
+        });
+
+        search_input.on('blur', function() {
+            $(this).attr('opacity', 'display');
+        });
+    });
+</script>
+</body>
+</html>

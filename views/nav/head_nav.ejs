@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<div class="header-row">
+    <div class="form-base" id="main-header">
+        <div class="menu padding-area-20">
+            <a id="btn_menu">
+                a
+            </a>
+        </div>
+        <div class="titleBox padding-area-20">
+            <p id="userName">User</p>
+        </div>
+        <ul class="form-header-button arrange-right ">
+            <li>
+                <a>
+                    <img id="icon" src="/images/logout.svg">
+                </a>
+            </li>
+            <li>
+                <a id="btn_login">
+                    <img id="icon" src="/images/logout.svg">
+                    <span id="text">Login</span>
+                </a>
+            </li>
+            <li>
+                <a>Login</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let isSideMini = false;
+        let isLoggedIn = false, name;
+        $.ajax({
+            type: "GET",
+            url: "/check",
+            success: function(data) {
+                isLoggedIn = data.isLoggedIn;
+                name = data.name;
+
+                if(isLoggedIn === true) {
+                    $("#userName").text("Welcome to Page, " + name + "님!");
+                    $("#text").text("Log out");
+                } else {
+                    $("#text").text("Log in");
+                }
+            },
+            error: function() {
+                console.log("그럼 여기에?");
+            }
+        });
+
+        $("#btn_login").on('click', function() {
+            if(isLoggedIn === false) {
+                $(location).attr('href', '/login');
+            } else if(isLoggedIn === true) {
+                $.ajax({
+                    type: "GET",
+                    url: "/logout",
+                    success: function() {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+
+        $("#btn_menu").on('click', function() {
+            if(isSideMini === false) {
+                $(".main-container").addClass('extend');
+                $(".side-navbar").addClass('mini-size');
+                isSideMini = true;
+            } else {
+                $(".main-container").removeClass('extend');
+                $(".side-navbar").removeClass('mini-size');
+                isSideMini = false;
+            }
+        });
+    });
+</script>
+</html>

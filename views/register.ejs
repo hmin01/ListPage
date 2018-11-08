@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+
+    <link href="/stylesheets/login.css" rel="stylesheet">
+    <link href="/stylesheets/animate.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+</head>
+<body class="body-bg">
+    <section>
+        <article>
+            <div class="alert-container" id="alert-field"></div>
+            <div class="form-basic animated fadeInDown">
+                <div class="form-basic-content text-center">
+                    <div>
+                        <div class="form-title form-register-title">
+                            <h4>Welcome</h4>
+                        </div>
+                        <div class="form-group" data-tag="login-input">
+                            <input class="form-control form-control-sm" autocomplete="off" type="email" id="input_id" placeholder="ID (E-mail)">
+                        </div>
+                        <div class="form-group" data-tag="login-input">
+                            <input class="form-control form-control-sm" autocomplete="off" type="password" id="input_password" placeholder="Password">
+                        </div>
+                        <div class="form-group" data-tag="login-input">
+                            <input class="form-control form-control-sm" autocomplete="off" type="text" id="input_username" placeholder="UserName">
+                        </div>
+                        <div class="form-group" data-tag="login-input">
+                            <input class="form-control form-control-sm" autocomplete="off" type="text" id="input_phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group" data-tag="button-area">
+                            <button class="login-page-button block" type="button" id="btn_register" data-tag="mainBtn">Register</button>
+                            <p class="text-center">Already have an account?</p>
+                            <button class="login-page-button block" type="button" id="btn_login" data-tag="subBtn">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let isBlank, count;
+
+            $("#btn_register").on("click", function() {
+                count = 0;
+                const user_info = {
+                    user_id: $("#input_id").val(),
+                    password: $("#input_password").val(),
+                    name: $("#input_username").val(),
+                    phone: $("#input_phone").val()
+                }
+                checkBlock(user_info.user_id);
+                checkBlock(user_info.password);
+                checkBlock(user_info.name);
+                checkBlock(user_info.phone);
+                if(count === 0) {
+                    if(verifyEmail()) {
+                        save(user_info);
+                    } else {
+                        setAlert("ID는 e-mail형식입니다.", "warning");
+                    }
+                }
+                else {
+                    setAlert("내용을 모두 작성해주세요.", "warning");
+                }
+            });
+
+            $("#btn_login").on("click", function() {
+                $(location).attr("href", "/login");
+            });
+
+            function checkBlock(obj) {
+                isBlank = 0;
+                const blank_pattern_1 = /^\s+|\s+$/g;
+                const blank_pattern_2 = /[\s]/g;
+                if((obj === "" || obj == null) || obj.replace(blank_pattern_1, "") ==="" || blank_pattern_2.test(obj) === true) {
+                    isBlank = 1;
+                } else {
+                    isBlank = 0;
+                }
+                count += isBlank;
+            }
+
+            function verifyEmail() {
+                const emailVal = $("#input_id").val();
+                const regExp =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                return emailVal.match(regExp) != null;
+            }
+
+            function save(user_info) {
+                $.ajax({
+                    type: "POST",
+                    url: "/save",
+                    data: "user_id="+user_info.user_id+"&password="+user_info.password+"&name="+user_info.name+"&phone="+user_info.phone,
+                    success: function (data) {
+                        if(data.result) {
+                            setAlert("register is complete", "success");
+                            setTimeout(function() {
+                                $(location).attr("href", "/login");
+                            }, 500);
+                        } else {
+                            if(data.code === 101)
+                                setAlert(data.message, "warning");
+                            else
+                                setAlert("Miss", "warning");
+                        }
+                    }
+                });
+            }
+
+            let alert_fadeOut, alert_remove;
+            function setAlert(str, code) {
+                let html = "";
+                if(code === 'warning') {
+                    html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="warning">' +
+                        '<img id="alert-img" src="/images/alert.svg">';
+                } else if (code === 'success') {
+                    html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="success">' +
+                        '<img id="alert-img" src="/images/alert.svg">';
+                } else {
+                    html = '<div class="form-alert animated fadeIn-alert time-half" id="alert" data-tag="normal">' +
+                        '<img id="alert-img" src="/images/alert.svg">';
+                }
+                html += '<p id="alert-message">' + str + '</p>' +
+                    '<button class="alert-close" type="button" id="close">x</button>' +
+                    '</div>';
+                clearTimeout(alert_fadeOut);
+                clearTimeout(alert_remove);
+                $("#alert-field").html(html);
+
+                $("#alert").on('click', function() {
+                    console.log('click');
+                    $(this).attr('class', "form-alert animated fadeOut-alert time-half");
+                    setTimeout(function() {
+                        $(this).remove();
+                    }, 500);
+                });
+
+                $("#alert > #close").on('click', function() {
+                    $(this).remove();
+                });
+
+                alert_fadeOut = setTimeout(function() {
+                    $("#alert-field div").attr('class', "form-alert animated fadeOut-alert time-half");
+                    alert_remove = setTimeout(function() {
+                        $("#alert-field div").remove();
+                    }, 500);
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
