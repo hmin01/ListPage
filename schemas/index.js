@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 module.exports = function() {
     const connect = function () {
         // 쿼리 내용을 콘솔을 통해 확인
-        if(process.env.NODE_ENV !== 'production') {
-            mongoose.set('debug', true);
-        }
+        // if(process.env.NODE_ENV !== 'production') {
+        //     mongoose.set('debug', true);
+        // }
         
         // 몽구스와 몽고디비를 연결 (주소형식 mongodb://[name:password@]host[:port][/[database][?option]])
         mongoose.connect('mongodb://root:qlalfqjsgh@localhost:27017/admin', {

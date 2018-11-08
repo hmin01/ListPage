@@ -22,73 +22,63 @@
                                 <div class="item-box-title">
                                     <p>title</p>
                                 </div>
-                                <div class="item-box-content" data-activate="true">
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="occupy-33">
-                        <div class="padding-area-15">
-                            <div class="item-box">
-                                <div class="item-box-title">
-                                    <p>title</p>
-                                </div>
-                                <div class="item-box-content" data-activate="true">
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="occupy-33">
-                        <div class="padding-area-15">
-                            <div class="item-box">
-                                <div class="item-box-title">
-                                    <p>title</p>
-                                </div>
-                                <div class="item-box-content" data-activate="true">
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="body-row">
-                    <div class="occupy-33">
-                        <div class="padding-area-15">
-                            <div class="item-box">
-                                <div class="item-box-title">
-                                    <p>title</p>
-                                </div>
-                                <div class="item-box-content" data-activate="true">
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
+                                <div class="item-box-content" id="alarm-item-box" data-activate="true">
+                                    <!--<div class="form-message-box">-->
+                                        <!--<small class="float-right">author</small>-->
+                                        <!--<p>Test text</p>-->
+                                        <!--<small class="datetime-text">Today 02:10 pm - 2018.11.08</small>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="occupy-66">
-                        <div class="padding-area-15">
-                            <div class="item-box">
-                                <div class="item-box-title">
-                                    <p>title</p>
+                        <div class="body-row">
+                            <div class="occupy-50">
+                                <div class="padding-area-15">
+                                    <div class="item-box">
+                                        <div class="item-box-title">
+                                            <p>title</p>
+                                        </div>
+                                        <div class="item-box-content" data-activate="true">
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="item-box-content" data-activate="true">
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
-                                    <p>content</p>
+                            </div>
+                            <div class="occupy-50">
+                                <div class="padding-area-15">
+                                    <div class="item-box">
+                                        <div class="item-box-title">
+                                            <p>title</p>
+                                        </div>
+                                        <div class="item-box-content" data-activate="true">
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body-row">
+                            <div class="occupy-100">
+                                <div class="padding-area-15">
+                                    <div class="item-box">
+                                        <div class="item-box-title">
+                                            <p>title</p>
+                                        </div>
+                                        <div class="item-box-content" data-activate="true">
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                            <p>content</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +154,7 @@
 </section>
 <footer></footer>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -186,6 +177,38 @@
             obj.slideDown(250, function () {
                 obj.attr('data-activate', 'true');
             });
+        }
+
+        // Fill Message Box
+        let testDay = moment("2018-11-6");
+        for(let i=0;i<10;i++) {
+            if(i > 3 && i < 7)
+                testDay = moment("2018-11-7");
+            else if(i>6)
+                testDay = moment("2018-11-8");
+
+            const html = '<div class="form-message-box">' +
+                '<small class="float-right">author</small>' +
+                '<p>Test text</p>' +
+                '<small class="datetime-text">'+ calc_date(testDay) + (testDay.format("hh:mm a - YYYY.MM.DD")) +'</small>' +
+                '</div>';
+            $("#alarm-item-box").append(html);
+        }
+
+        function calc_date(date) {
+            let dateStr = "";
+            const today = moment(new Date());
+            const date_diff = moment.duration(today.diff(date)).asDays();
+
+            if(date_diff >= 0 && date_diff < 1)
+                dateStr = "Today";
+            else if(date_diff >= 1 && date_diff < 2)
+                dateStr = "Yesterday";
+            else {
+                dateStr = Math.floor(date_diff) + " days ago";
+            }
+            dateStr += " at ";
+            return dateStr;
         }
     });
 </script>

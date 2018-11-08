@@ -1,3 +1,7 @@
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
 html, body, section, article {
     height: 100%;
 }
@@ -21,6 +25,10 @@ a {
 
 div p {
     margin: 0;
+}
+
+.float-right {
+    float: right;
 }
 
 /* Side Menu */
@@ -219,4 +227,22 @@ div.body-row {
 
 .item-box-content > p {
     margin: 5px 0;
+}
+
+.form-message-box {
+    padding: 10px;
+    border-bottom: 1px solid #F4F5F6;
+}
+
+.form-message-box:first-child {
+    padding-top: 0;
+}
+
+.form-message-box:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.datetime-text {
+    font-size: 10px;
 }
