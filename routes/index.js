@@ -11,12 +11,20 @@ router.get('/', function(req, res) {
     res.render('index', { title: 'Express' });
 });
 
-router.get('/main', check.isLoggedIn_main, function(req, res) {
-    res.render('main', {isLoggedIn: true, name: req.user.name});
+router.get('/main', function(req, res) {
+    req.session.page = 'main';
+    res.render('main');
 });
 
 router.get('/check', check.isLoggedIn, function(req, res) {
     res.json({isLoggedIn: true, name: req.user.name});
+});
+
+router.get('/pageCheck', function(req, res) {
+    console.log("currentPage : " + req.session.page);
+    if(!req.session.page)
+        req.session.page = 'main';
+    res.json({page: req.session.page});
 });
 
 router.get('/register', function(req, res) {

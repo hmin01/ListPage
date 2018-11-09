@@ -3,14 +3,14 @@ module.exports =  {
         if(req.isAuthenticated()) {
             next();
         } else {
-            return res.json({isLoggedIn: false, name:null});
+            res.json({isLoggedIn: false, name: null});
         }
     },
     isLoggedIn_main: function(req, res, next) {
         if(req.isAuthenticated()) {
             next();
         } else {
-            res.render('main', {isLoggedIn: false, name:null});
+            res.render('main');
         }
     },
     isNotLoggedIn: function(req, res, next) {

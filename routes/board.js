@@ -10,6 +10,7 @@ const dataSize = 10;
 
 /* GET users listing. */
 router.get("/", function(req, res) {
+    req.session.page = 'board';
     res.render('board/boardMain', {isLoggedIn: true});
 });
 

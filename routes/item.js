@@ -6,7 +6,8 @@ const item_schema = require('../schemas/item');
 const dataSize = 10;
 
 router.get('/', function(req, res) {
-  res.render("item/item");
+    req.session.page = 'item';
+    res.render("item/item");
 });
 
 router.get('/list', function(req, res) {

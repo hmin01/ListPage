@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<nav>
+<nav class="no-js">
     <div class="side-navbar">
         <div id="user_account">
             <div id="profile"></div>
@@ -68,7 +66,6 @@
         </ul>
     </div>
 </nav>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
         $.ajax({
@@ -81,6 +78,25 @@
                     $("#user_intro > p").text("user Name");
                     $("#user_intro > small").text("Login is required.");
                 }
+            },
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/pageCheck",
+            success: function(data) {
+                const page = data.page;
+                if(page === "main") {
+                    $(".first-menu > li:first-child").addClass('activate');
+                    $(".first-menu > li:first-child > a").next().attr('data-activate', 'true');
+                } else if(page === "board") {
+                    $(".first-menu > li:nth-child(2)").addClass('activate');
+                    $(".first-menu > li:nth-child(2) > a").next().attr('data-activate', 'true');
+                } else if(page === "item") {
+                    $(".first-menu > li:nth-child(3)").addClass('activate');
+                    $(".first-menu > li:nth-child(3) > a").next().attr('data-activate', 'true');
+                }
+                $('.no-js').removeClass('no-js');
             },
         });
 
@@ -150,4 +166,3 @@
         // }
     });
 </script>
-</html>
