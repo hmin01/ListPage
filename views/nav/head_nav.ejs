@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<div class="header-row">
+<div class="header-row no-js">
     <div class="form-base" id="main-header">
         <div class="menu padding-area-20">
             <a id="btn_menu">
@@ -8,7 +8,7 @@
             </a>
         </div>
         <div class="titleBox padding-area-20">
-            <p id="userName">User</p>
+            <p id="welcome_page"></p>
         </div>
         <ul class="form-header-button arrange-right ">
             <li>
@@ -19,7 +19,7 @@
             <li>
                 <a id="btn_login">
                     <img id="icon" src="/images/logout.svg">
-                    <span id="text">Login</span>
+                    <span id="text"></span>
                 </a>
             </li>
             <li>
@@ -33,24 +33,22 @@
 <script>
     $(document).ready(function() {
         let isSideMini = false;
-        let isLoggedIn = false, name;
+        let isLoggedIn = false;
         $.ajax({
             type: "GET",
             url: "/check",
             success: function(data) {
                 isLoggedIn = data.isLoggedIn;
-                name = data.name;
 
                 if(isLoggedIn === true) {
-                    $("#userName").text("Welcome to Page, " + name + "님!");
+                    $("#userName").text("Welcome to Page, " + data.name + "님!");
                     $("#text").text("Log out");
                 } else {
                     $("#text").text("Log in");
                 }
+
+                $('.header-row').removeClass('no-js');
             },
-            error: function() {
-                console.log("그럼 여기에?");
-            }
         });
 
         $("#btn_login").on('click', function() {

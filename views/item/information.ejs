@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+
+    <link href="/stylesheets/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+</head>
+<body>
+<% include ../nav/side_nav.ejs %>
+<section>
+    <article class="main-container">
+        <div class="main-header">
+            <% include ../nav/head_nav.ejs %>
+        <div class="main-body">
+            <div class="animated fadeInRight">
+                <div class="body-row">
+                    <div class="occupy-66">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>Information</p>
+                                </div>
+                                <div class="item-box-content" id="information-main"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="occupy-33">
+                        <div class="padding-area-15">
+                            <div class="item-box">
+                                <div class="item-box-title">
+                                    <p>title</p>
+                                </div>
+                                <div class="item-box-content" data-activate="true">
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                    <p>content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<footer></footer>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        for(let i=0;i<10;i++) {
+            const html = '<div class="sub-item-box">' +
+                '<div class="sub-item-box-title">' +
+                '<p>'+ alphabet_t(i) +'</p>' +
+                '</div>' +
+                '<div class="sub-item-box-content" data-activate="false" style="display: none;">' +
+                '<p>'+ alphabet(i) +'</p>' +
+                '<p>'+ alphabet(i) +'</p>' +
+                '<p>'+ alphabet(i) +'</p>' +
+                '<p>'+ alphabet(i) +'</p>' +
+                '</div>' +
+                '</div>';
+            $("#information-main").append(html);
+        }
+
+        function alphabet(num) {
+            if(num===0) {
+                return 'aA';
+            } else if(num===1) {
+                return 'bB';
+            } else if(num===2) {
+                return 'cC';
+            } else if(num===3) {
+                return 'dD';
+            } else if(num===4) {
+                return 'eE';
+            } else if(num===5) {
+                return 'fF';
+            } else if(num===6) {
+                return 'gG';
+            } else if(num===7) {
+                return 'hH';
+            } else if(num===8) {
+                return 'iI';
+            } else if(num===9) {
+                return 'jJ';
+            } else {
+                return 'nothing'
+            }
+        }
+
+        function alphabet_t(num) {
+            if(num===0) {
+                return 'about A';
+            } else if(num===1) {
+                return 'about B';
+            } else if(num===2) {
+                return 'about C';
+            } else if(num===3) {
+                return 'about D';
+            } else if(num===4) {
+                return 'about E';
+            } else if(num===5) {
+                return 'about F';
+            } else if(num===6) {
+                return 'about G';
+            } else if(num===7) {
+                return 'about H';
+            } else if(num===8) {
+                return 'about I';
+            } else if(num===9) {
+                return 'about J';
+            } else {
+                return 'nothing'
+            }
+        }
+
+        $(".sub-item-box-title").on('click', function() {
+            const item_box = $(this).next();
+            if (item_box.attr('data-activate') === "true") {
+                item_slidUp(item_box);
+            } else if(item_box.attr('data-activate') === 'false') {
+                item_slidDown(item_box);
+            }
+        });
+
+        function item_slidUp(obj) {
+            obj.parent().removeClass('activate');
+            obj.slideUp(250, function() {
+                obj.attr('data-activate', 'false');
+            });
+        }
+
+        function item_slidDown(obj) {
+            obj.parent().addClass('activate');
+            obj.slideDown(250, function () {
+                obj.attr('data-activate', 'true');
+            });
+        }
+
+
+    });
+</script>
+</body>
+</html>

@@ -50,7 +50,7 @@
                                     <th>작성일</th>
                                 </tr>
                                 </thead>
-                                <tbody id="table-body"></tbody>
+                                <tbody id="board-table-body"></tbody>
                             </table>
                         </div>
                         <div class="board-footer text-center">
@@ -82,7 +82,7 @@
         });
 
         function displayTable(totalPage, currentPage) {
-            $("#table-body").html("");
+            $("#board-table-body").html("");
             let html = "";
             for(let i=0; i<boardList.length; i++) {
                 const info = boardList[i];
@@ -96,9 +96,9 @@
                         '<td>' + info.id + '</td>' +
                     '</tr>'
             }
-            $("#table-body").html(html);
+            $("#board-table-body").html(html);
 
-            $("#table-body tr").on("click", function () {
+            $("#board-table-body tr").on("click", function () {
                 const selectNum = $(this).find("td:last-child").text();
                 $(location).attr("href", "/board/info/"+selectNum);
             });
@@ -108,7 +108,7 @@
 
         function displayPaging(totalPage, currentPage) {
             $("#paging").html("");
-            html = "";
+            let html = "";
             for(let cnt=1; cnt<=(totalPage);cnt++) {
                 html += '<li><a id="pageNum">' + cnt + '</a></li>';
             }

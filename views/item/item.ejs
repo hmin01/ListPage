@@ -77,7 +77,7 @@
                                     <th class="notDisplay"></th>
                                 </tr>
                                 </thead>
-                                <tbody id="table-body"></tbody>
+                                <tbody id="item-table-body"></tbody>
                             </table>
                         </div>
                         <div class="board-footer text-center">
@@ -245,7 +245,7 @@
         }
 
         function displayTable(totalPage, currentPage) {
-            $("#table-body").html("");
+            $("#item-table-body").html("");
             let html = "";
 
             let item, state, duration = 0;
@@ -272,9 +272,9 @@
                         '<td style="display:none">' + itemList[i]._id + '</td>' +
                     '<tr>';
             }
-            $("#table-body").html(html);
+            $("#item-table-body").html(html);
 
-            $("#table-body > tr > td:nth-last-child(2)").on("click", function () {
+            $("#item-table-body > tr > td:nth-last-child(2)").on("click", function () {
                 const item = $('+ td', this).text();
 
                 swal({
@@ -298,8 +298,8 @@
                                             type: "success"},
                                         function () {
                                             getData();
-                                            $("#table-head > tr > th:last-child").css("display", "none");
-                                            $("#table-body > tr > td:nth-last-child(2)").css("display", "none");
+                                            $("#item-table-head > tr > th:last-child").css("display", "none");
+                                            $("#item-table-body > tr > td:nth-last-child(2)").css("display", "none");
                                             editState = false;
                                         });
                                 }

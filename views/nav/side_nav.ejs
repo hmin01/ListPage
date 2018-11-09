@@ -2,6 +2,13 @@
 <html>
 <nav>
     <div class="side-navbar">
+        <div id="user_account">
+            <div id="profile"></div>
+            <div id="user_intro">
+                <p id="user_name"></p>
+                <small></small>
+            </div>
+        </div>
         <ul class="first-menu">
             <li>
                 <a href="/main">
@@ -9,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a>
+                <a href="#">
                     <span>Board</span>
                 </a>
                 <ul class="second-menu" data-activate="false">
@@ -24,7 +31,7 @@
                 </a>
                 <ul class="second-menu" data-activate="false">
                     <li><a href="/item">item_page</a></li>
-                    <li><a>item</a></li>
+                    <li><a href="/item/information">information</a></li>
                     <li><a>item</a></li>
                 </ul>
             </li>
@@ -64,6 +71,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/check",
+            success: function(data) {
+                if(data.isLoggedIn === true) {
+                    $("#user_intro > p").text(data.name);
+                } else {
+                    $("#user_intro > p").text("user Name");
+                    $("#user_intro > small").text("Login is required.");
+                }
+            },
+        });
+
         $(".first-menu > li > a").on('click', function () {
             const subMenu = $(this).next();
             const parentMenu = subMenu.parent();
@@ -87,6 +107,9 @@
                     item_slidUp(otherObj);
                 }
             }
+
+            // href=# 일 경우
+            if(this.getAttribute('href') === "#") { return false; }
         });
 
         function item_slidUp(obj) {

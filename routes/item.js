@@ -65,6 +65,10 @@ router.post('/save', function(req, res) {
         });
 });
 
+router.get('/information', function(req, res) {
+    res.render('item/information');
+});
+
 router.get('/page/:num', function (req, res) {
     const currentPage = req.params.num;
     const start = (currentPage-1)*dataSize;

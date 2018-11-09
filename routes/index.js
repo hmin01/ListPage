@@ -16,7 +16,6 @@ router.get('/main', check.isLoggedIn_main, function(req, res) {
 });
 
 router.get('/check', check.isLoggedIn, function(req, res) {
-    console.log('index.js : ' + true);
     res.json({isLoggedIn: true, name: req.user.name});
 });
 
@@ -44,7 +43,7 @@ router.post('/save', check.isNotLoggedIn, async function (req, res, next) {
         });
         return res.json({result: true});
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return next(err);
     }
 });
