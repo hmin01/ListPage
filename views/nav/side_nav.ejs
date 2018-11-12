@@ -68,6 +68,8 @@
 </nav>
 <script>
     $(document).ready(function() {
+        $.ajaxSetup({cache: false});
+
         $.ajax({
             type: "GET",
             url: "/check",

@@ -70,7 +70,7 @@
                         </div>
                         <div class="board-body">
                             <table class="basic-table item-table">
-                                <thead id="table-head">
+                                <thead id="item-table-head">
                                 <tr>
                                     <th>item</th>
                                     <th>content</th>
@@ -127,11 +127,11 @@
         $("#btn_edit").on('click', function() {
             editState = !editState;
             if(editState) {
-                $("#table-head > tr > th:last-child").css("display", "table-cell");
-                $("#table-body > tr > td:nth-last-child(2)").css("display", "table-cell");
+                $("#item-table-head > tr > th:last-child").css("display", "table-cell");
+                $("#item-table-body > tr > td:last-child").css("display", "table-cell");
             } else {
-                $("#table-head > tr > th:last-child").css("display", "none");
-                $("#table-body > tr > td:nth-last-child(2)").css("display", "none");
+                $("#item-table-head > tr > th:last-child").css("display", "none");
+                $("#item-table-body > tr > td:last-child").css("display", "none");
             }
         });
 
@@ -262,21 +262,20 @@
 
                 html +=
                     '<tr>' +
-                        '<td>' + item + '</td>' +
+                        '<td data-id="' + itemList[i].id + '">' + item + '</td>' +
                         '<td>' + itemList[i].content + '</td>' +
                         '<td>' + state + '</td>' +
                         '<td>' + duration + '</td>' +
                         '<td>' + moment(itemList[i].createdAt).format("YYYY-MM-DD HH:mm") + '</td>' +
-                        '<td style="display:none">' +
+                        '<td data-id="' + itemList[i]._id + '">' +
                             '<p id="del">x</p>' +
                         '</td>' +
-                        '<td style="display:none">' + itemList[i]._id + '</td>' +
                     '<tr>';
             }
             $("#item-table-body").html(html);
 
-            $("#item-table-body > tr > td:nth-last-child(2)").on("click", function () {
-                const item = $('+ td', this).text();
+            $("#item-table-body > tr > td:last-child").on("click", function () {
+                const item = this.dataset.id;
 
                 swal({
                         title: "Are you sure?",
@@ -300,7 +299,7 @@
                                         function () {
                                             getData();
                                             $("#item-table-head > tr > th:last-child").css("display", "none");
-                                            $("#item-table-body > tr > td:nth-last-child(2)").css("display", "none");
+                                            $("#item-table-body > tr > td:last-child").css("display", "none");
                                             editState = false;
                                         });
                                 }

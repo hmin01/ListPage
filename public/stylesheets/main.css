@@ -58,33 +58,33 @@ div p {
 div.side-navbar {
     float: left;
     width: 220px;
-    transition: width 0.4s, font-size 0.4s;
+    transition: font-size 0.4s;
 }
 
-div.mini-size {
-    width: 130px;
-    font-size: 13px;
-}
+/*div.mini-size {*/
+    /*width: 130px;*/
+    /*font-size: 13px;*/
+/*}*/
 
-div.mini-size > #user_account {
-    height: 130px;
-}
+/*div.mini-size > #user_account {*/
+    /*height: 130px;*/
+/*}*/
 
-div.mini-size > #user_account > #profile {
-    margin: 10px auto;
-}
+/*div.mini-size > #user_account > #profile {*/
+    /*margin: 10px auto;*/
+/*}*/
 
-div.mini-size > ul {
-    text-align: center;
-}
+/*div.mini-size > ul {*/
+    /*text-align: center;*/
+/*}*/
 
-div.mini-size > ul.first-menu > li > a {
-    padding: 10px 0;
-}
+/*div.mini-size > ul.first-menu > li > a {*/
+    /*padding: 10px 0;*/
+/*}*/
 
-div.mini-size > ul.first-menu > li > ul.second-menu > li > a {
-    padding: 5px 0;
-}
+/*div.mini-size > ul.first-menu > li > ul.second-menu > li > a {*/
+    /*padding: 5px 0;*/
+/*}*/
 
 div.side-navbar li {
     display: block;
@@ -189,11 +189,6 @@ div.form-base {
 .main-container {
     margin: 0 0 0 220px;
     background-color: #F1F2F3;
-    transition: margin 0.4s;
-}
-
-article.extend {
-    margin: 0 0 0 130px;
 }
 
 div.main-body {
@@ -314,7 +309,12 @@ div.body-row {
 }
 
 /* Media mini */
-@media (max-width: 990px) {
+@media (max-width: 992px) {
+    .main-container {
+        margin: 0 0 0 130px;
+        transition: margin 0.4s;
+    }
+
     #user_account {
         height: 130px;
     }
@@ -327,7 +327,7 @@ div.body-row {
         float: left;
         width: 130px;
         font-size: 13px;
-        transition: width 0.4s, font-size 0.4s;
+        transition: width 0.4s;
     }
 
     div.side-navbar > ul {
@@ -340,9 +340,5 @@ div.body-row {
 
     div.side-navbar > ul.first-menu > li > ul.second-menu > li > a {
         padding: 5px 0;
-    }
-
-    .main-container {
-        margin: 0 0 0 130px;
     }
 }

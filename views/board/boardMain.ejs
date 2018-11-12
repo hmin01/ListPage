@@ -91,17 +91,16 @@
                 const count = ((currentPage - 1) * 10) + 1;
                 html +=
                     '<tr>' +
-                        '<td>' + (count+i) + '</td>' +
+                        '<td data-id="'+ info.id +'">' + (count+i) + '</td>' +
                         '<td>' + info.title + '</td>' +
                         '<td>' + info.user.name + '</td>' +
                         '<td>' + moment(info.createdAt).format("YYYY-MM-DD") + '</td>' +
-                        '<td>' + info.id + '</td>' +
                     '</tr>'
             }
             $("#board-table-body").html(html);
 
             $("#board-table-body tr").on("click", function () {
-                const selectNum = $(this).find("td:last-child").text();
+                const selectNum = this.querySelector('td').dataset.id;
                 $(location).attr("href", "/board/info/"+selectNum);
             });
 

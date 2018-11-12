@@ -167,6 +167,10 @@ table {
   font-size: 0.85em;
 }
 
+.item-table > tbody > tr > td:last-child {
+  display: none;
+}
+
 .form-group-choice {
   margin-bottom: 20px;
   border-bottom: 1px solid #f1f2f3;

@@ -163,10 +163,6 @@ table {
   width: 15%;
 }
 
-.board-table > tbody > tr > td:last-child {
-  display: none;
-}
-
 .form-search-input {
   width: 200px;
   padding: 5px 8px;
